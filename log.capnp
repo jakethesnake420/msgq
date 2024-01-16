@@ -2181,6 +2181,14 @@ struct Microphone {
   soundPressureWeighted @3 :Float32;
   soundPressureWeightedDb @1 :Float32;
   filteredSoundPressureWeightedDb @2 :Float32;
+  rawSample @4 :Data;
+  frameIndex @5 :UInt32;
+}
+
+struct SpeechToText {
+  isTranscribing @0 :Bool;
+  interimResult @1 :Text;
+  finalResult @2 :Text;
 }
 
 struct Event {
