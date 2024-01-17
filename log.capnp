@@ -2181,8 +2181,11 @@ struct Microphone {
   soundPressureWeighted @3 :Float32;
   soundPressureWeightedDb @1 :Float32;
   filteredSoundPressureWeightedDb @2 :Float32;
-  rawSample @4 :Data;
-  frameIndex @5 :UInt32;
+}
+
+struct MicrophoneRaw {
+  frameIndex @0 :UInt32; # buffer index * size of buffer
+  rawSample @1 :Data;
 }
 
 struct SpeechToText {
@@ -2259,6 +2262,8 @@ struct Event {
 
     # microphone data
     microphone @103 :Microphone;
+    microphoneRaw @127: MicrophoneRaw;
+    speechToText @128: SpeechToText;
 
     # systems stuff
     androidLog @20 :AndroidLogEntry;
