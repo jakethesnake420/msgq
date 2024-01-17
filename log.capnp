@@ -2190,8 +2190,8 @@ struct MicrophoneRaw {
 
 struct SpeechToText {
   isTranscribing @0 :Bool;
-  interimResult @1 :Text;
-  finalResult @2 :Text;
+  finalResultReady @1 :Bool;
+  result @2 :Text;
 }
 
 struct Event {
