@@ -2191,6 +2191,13 @@ struct MicrophoneRaw {
 struct SpeechToText {
   finalResultReady @0 :Bool;
   result @1 :Text;
+  state @2 :State;
+  enum State {
+    none @0;
+    begin @1;
+    empty @2;
+    error @3;
+  }
 }
 
 struct Event {
