@@ -2189,14 +2189,14 @@ struct MicrophoneRaw {
 }
 
 struct SpeechToText {
-  finalResultReady @0 :Bool;
-  result @1 :Text;
-  state @2 :State;
+  transcript @0 :Text;
+  state @1 :State;
   enum State {
     none @0;
     begin @1;
     empty @2;
     error @3;
+    final @4;
   }
 }
 
