@@ -159,3 +159,32 @@ int VisionBuf::free() {
   struct ion_handle_data handle_data = {.handle = this->handle};
   return HANDLE_EINTR(ioctl(ion_fd(), ION_IOC_FREE, &handle_data));
 }
+
+void VisionBuf::allocate_no_cache(size_t length) {
+  struct ion_allocation_data ion_alloc = {0};
+  struct ion_fd_data ion_fd_data = {0};
+  struct ion_handle_data ion_handle_data = {0};
+
+  ion_alloc.handle = -1;
+  ion_alloc.len = length;
+  ion_alloc.align = 4096;
+  ion_alloc.flags = 0;
+  ion_alloc.heap_id_mask = ION_HEAP(ION_IOMMU_HEAP_ID);
+
+  assert(HANDLE_EINTR(ioctl(ion_fd(), ION_IOC_ALLOC, &ion_alloc)) == 0);
+  ion_fd_data.handle = ion_alloc.handle;
+  ion_fd_data.fd = -1;
+  assert(HANDLE_EINTR(ioctl(ion_fd(), ION_IOC_MAP, &ion_fd_data)) == 0);
+  ion_handle_data.handle = ion_alloc.handle;
+  assert(HANDLE_EINTR(ioctl(ion_fd(), ION_IOC_FREE, &ion_handle_data)) == 0);
+
+  this->addr = mmap(NULL, length, PROT_READ | PROT_WRITE,
+                         MAP_SHARED, ion_fd_data.fd, 0);
+  assert(this->addr != MAP_FAILED);
+  this->len = length;
+  this->mmap_len = ion_alloc.len;
+  this->handle = ion_alloc.handle;
+  this->fd = ion_fd_data.fd;
+  this->frame_id = (uint64_t*)((uint8_t*)this->addr + this->len + PADDING_CL);
+  memset(this->addr, 0, this->mmap_len);
+}

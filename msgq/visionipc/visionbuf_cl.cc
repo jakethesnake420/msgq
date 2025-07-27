@@ -92,3 +92,7 @@ int VisionBuf::free() {
   err = close(this->fd);
   return err;
 }
+
+void VisionBuf::allocate_no_cache(size_t length) {
+  assert(0 == "This function is not implemented for non-QCOM platforms");
+}
