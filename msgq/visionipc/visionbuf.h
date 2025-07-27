@@ -51,6 +51,7 @@ class VisionBuf {
   int handle = 0;
 
   void allocate(size_t len);
+  void allocate_no_cache(size_t len);
   void import();
   void init_cl(cl_device_id device_id, cl_context ctx);
   void init_yuv(size_t width, size_t height, size_t stride, size_t uv_offset);
